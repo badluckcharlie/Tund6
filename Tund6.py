@@ -48,17 +48,27 @@
 # {'Mis on Python?': 'programmeerimiskeel',
 from gtts import gTTS
 
-Dictionary = [["hello","welcome","thank you","goodbye","good","sorry","price"],["bonjour","bienvenue","merci","au revoir","bien","désolée","prix"],["Nǐ hǎo","Huānyíng","Xièxiè","Zàijiàn","Hǎo de","Duìbùqǐ","Jiàgé"]]
-Welcomeeng="Welcome to the ENGLISH/FRENCH/CHINESE translator"
-Welcomefra="Bienvenue dans le traducteur ANGLAIS/FRANÇAIS/CHINOIS"
-Welcomechi="Huānyíng shǐyòng yīngyǔ/fǎyǔ/zhōngwén fānyì"
-test_user_score=[[],[]]
+from translator_functions import *
+
+Dictionary = [
+    ["hello", "welcome", "thank you", "goodbye", "good", "sorry", "price"],
+    ["bonjour", "bienvenue", "merci", "au revoir", "bien", "désolée", "prix"],
+    ["Nǐ hǎo", "Huānyíng", "Xièxiè", "Zàijiàn", "Hǎo de", "Duìbùqǐ", "Jiàgé"]
+]
+
+Welcomeeng = "Welcome to the ENGLISH/FRENCH/CHINESE translator"
+Welcomefra = "Bienvenue dans le traducteur ANGLAIS/FRANÇAIS/CHINOIS"
+Welcomechi = "Huānyíng shǐyòng yīngyǔ/fǎyǔ/zhōngwén fānyì"
+
+test_user_score = [[], []]
+
 print(f"{Welcomeeng} / {Welcomefra} / {Welcomechi}")
 print("_" * 20)
-user=input(str("Please type your name: "))
+user = input(str("Please type your name: "))
+
 while True:
     print("_" * 20)
-    print("Options: ")
+    print("Options:")
     print("1. Translate word")
     print("2. Add word")
     print("3. Remove word")
@@ -78,106 +88,58 @@ while True:
     except ValueError:
         print("Invalid input. Please enter a number.")
         continue
+
     if choice == 1:
         word = input("Enter the word to translate: ")
-        if word in Dictionary[0]:
-            index = Dictionary[0].index(word)
-            print(f"'{word}' in French is '{Dictionary[1][index]}' and in Chinese is '{Dictionary[2][index]}'.")
-        else:
-            print(f"The'{word}' is not in the dictionary.")
+        print(translate_word(word, Dictionary))
+
     elif choice == 2:
         word = input("Enter the word to add: ")
         french_word = input("Enter the French translation: ")
         chinese_word = input("Enter the Chinese translation: ")
-        Dictionary[0].append(word)
-        Dictionary[1].append(french_word)
-        Dictionary[2].append(chinese_word)
-        print(f"The word '{word}' has been added to the dictionary.")
+        print(add_word(word, french_word, chinese_word, Dictionary))
+
     elif choice == 3:
         word = input("Enter the word to remove: ")
-        if word in Dictionary[0]:
-            index = Dictionary[0].index(word)
-            Dictionary[0].pop(index)
-            Dictionary[1].pop(index)
-            Dictionary[2].pop(index)
-            print(f"The word '{word}' has been removed from the dictionary.")
-        else:
-            print(f"The word '{word}' is not in the dictionary.")
+        print(remove_word(word, Dictionary))
+
     elif choice == 4:
         word = input("Enter the word to edit: ")
-        if word in Dictionary[0]:
-            index = Dictionary[0].index(word)
-            new_word = input("Enter the new word: ")
-            new_french_word = input("Enter the new French translation: ")
-            new_chinese_word = input("Enter the new Chinese translation: ")
-            Dictionary[0][index] = new_word
-            Dictionary[1][index] = new_french_word
-            Dictionary[2][index] = new_chinese_word
-            print(f"The word '{word}' has been edited.")
-        else:
-            print(f"The word '{word}' is not in the dictionary.")
+        new_word = input("Enter the new word: ")
+        new_french_word = input("Enter the new French translation: ")
+        new_chinese_word = input("Enter the new Chinese translation: ")
+        print(edit_word(word, new_word, new_french_word, new_chinese_word, Dictionary))
+
     elif choice == 5:
-        print("All words in the dictionary:")
-        for i in range(len(Dictionary[0])):
-            print(f"{Dictionary[0][i]} - {Dictionary[1][i]} - {Dictionary[2][i]}")
+        for entry in show_all_words(Dictionary):
+            print(entry)
+
     elif choice == 6:
-        print("All words in English:")
-        for word in Dictionary[0]:
+        for word in show_words_by_language(Dictionary, 0):
             print(word)
+
     elif choice == 7:
-        print("All words in French:")
-        for word in Dictionary[1]:
+        for word in show_words_by_language(Dictionary, 1):
             print(word)
+
     elif choice == 8:
-        print("All words in Chinese:")
-        for word in Dictionary[2]:
+        for word in show_words_by_language(Dictionary, 2):
             print(word)
+
     elif choice == 9:
-        print("Test:")
-        score = 0
-        for i in range(len(Dictionary[0])):
-            print(f"Translate '{Dictionary[1][i]}' to English:")
-            answer = input("Your answer: ")
-            if answer.lower() == Dictionary[0][i].lower():
-                print("Correct!")
-                score += 1
-            else:
-                print(f"Wrong! The correct answer is '{Dictionary[0][i]}'.")
-        print(f"Your score is {score}/{len(Dictionary[0])}.")
-        test_user_score[0].append(user)
-        test_user_score[1].append(score)
+        test_french(Dictionary, user, test_user_score)
+
     elif choice == 10:
-        print("Test scores:")
-        try:
-            with open("test_scores.txt", "r") as file:
-                scores = file.readlines()
-                for score in scores:
-                    print(score.strip())
-        except FileNotFoundError:
-            print("No test scores found.")
+        for line in show_scores():
+            print(line)
+
     elif choice == 11:
-        print("Text to speech:")
         word = input("Enter the word to convert to speech: ")
-        if word in Dictionary[0]:
-            print(f"Converting '{word}' to speech...")
-            
-        else:
-            print(f"The word '{word}' is not in the dictionary.")
+        print(text_to_speech(word, Dictionary))
+
+    elif choice == 12:
+        test_chinese(Dictionary, user, test_user_score)
+
     elif choice == 13:
         print("Exiting the program.")
         break
-    elif choice == 12:
-        print("Test:")
-        score = 0
-        for i in range(len(Dictionary[0])):
-            print(f"Translate '{Dictionary[2][i]}' to English:")
-            answer = input("Your answer: ")
-            if answer.lower() == Dictionary[0][i].lower():
-                print("Correct!")
-                score += 1
-            else:
-                print(f"Wrong! The correct answer is '{Dictionary[0][i]}'.")
-        print(f"Your score is {score}/{len(Dictionary[0])}.")
-        test_user_score[0].append(user)
-        test_user_score[1].append(score)
-
