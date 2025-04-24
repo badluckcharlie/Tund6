@@ -78,11 +78,15 @@ def show_scores():
     except FileNotFoundError:
         return ["No test scores found."]
 
-
-def text_to_speech(word, dictionary):
-    if word in dictionary[0]:
-        return f"Converting '{word}' to speech..."
+from gtts import gTTS
+from playsound import playsound
+def text_to_speech(word, dictionary, language):
+    if word in dictionary[0] or dictionary[1] or dictionary[2]:
+        obj = gTTS(text=word, lang=language, slow=False)
+        failinimi = "heli.mp3"
+        obj.save(failinimi)
+        playsound(failinimi)
     else:
         return f"The word '{word}' is not in the dictionary."
-
+    
 

@@ -134,8 +134,11 @@ while True:
             print(line)
 
     elif choice == 11:
+        language= input("select language en/fr/chi: ")
+        if language=="chi":
+            language="zh-CN"
         word = input("Enter the word to convert to speech: ")
-        print(text_to_speech(word, Dictionary))
+        print(text_to_speech(word, Dictionary, language))
 
     elif choice == 12:
         test_chinese(Dictionary, user, test_user_score)
