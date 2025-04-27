@@ -50,11 +50,12 @@ from gtts import gTTS
 
 from translator_functions import *
 
-Dictionary = [
-    ["hello", "welcome", "thank you", "goodbye", "good", "sorry", "price"],
-    ["bonjour", "bienvenue", "merci", "au revoir", "bien", "désolée", "prix"],
-    ["Nǐ hǎo", "Huānyíng", "Xièxiè", "Zàijiàn", "Hǎo de", "Duìbùqǐ", "Jiàgé"]
-]
+Dictionary = load_dictionary("Dictionary.txt")
+# Dictionary = [
+#     ["hello", "welcome", "thank you", "goodbye", "good", "sorry", "price"],
+#     ["bonjour", "bienvenue", "merci", "au revoir", "bien", "désolée", "prix"],
+#     ["Nǐ hǎo", "Huānyíng", "Xièxiè", "Zàijiàn", "Hǎo de", "Duìbùqǐ", "Jiàgé"]
+# ]
 
 Welcomeeng = "Welcome to the ENGLISH/FRENCH/CHINESE translator"
 Welcomefra = "Bienvenue dans le traducteur ANGLAIS/FRANÇAIS/CHINOIS"
@@ -78,10 +79,14 @@ while True:
     print("7. Show all words in French")
     print("8. Show all words in Chinese")
     print("9. Test French-English")
-    print("10. Show test scores")
+    print("10. Show test score (current user)")
     print("11. Text to speech")
     print("12. Test Chinese-English")
     print("13. Exit")
+    print("14. SAVE SCORES TO FILE")
+    print("15. SHOW SCORE HISTORY")
+    print("16. SAVE DICTIONARY TO FILE")
+    print("_" * 20)
 
     try:
         choice = int(input("Enter your choice [select 1-13]: "))
@@ -130,7 +135,7 @@ while True:
         test_french(Dictionary, user, test_user_score)
 
     elif choice == 10:
-        for line in show_scores():
+        for line in show_scores(user, test_user_score, Dictionary):
             print(line)
 
     elif choice == 11:
@@ -146,3 +151,13 @@ while True:
     elif choice == 13:
         print("Exiting the program.")
         break
+
+    elif choice == 14:
+        save_scores("Score_Save.txt", test_user_score, Dictionary)
+    elif choice == 15:
+        history = show_score_history("Score_Save.txt")
+        for line in history:
+            print(line)
+
+    elif choice == 16:
+        save_dictionary ("Dictionary.txt", Dictionary)

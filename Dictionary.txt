@@ -1,0 +1,7 @@
+﻿hello|bonjour|Nǐ hǎo
+welcome|bienvenue|Huānyíng
+thank you|merci|Xièxiè
+goodbye|au revoir|Zàijiàn
+good|bien|Hǎo de
+sorry|désolée|Duìbùqǐ
+price|prix|Jiàgé
